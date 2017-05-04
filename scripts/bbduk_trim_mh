@@ -18,6 +18,7 @@ sting_r2="data/sting_r2.fastq.gz"
     out2=output/bbduk_trim/head_r2.fq.gz \
     ref=/Volumes/BiocArchive/archive/deardenlab/asw-transcriptome/bin/bbmap/resources/adapters.fa \
     ktrim=r k=23 mink=11 hdist=1 tpe tbo \
+    qtrim=r trimq=15 \
     &> "${outdir}"/head.log.txt &
 
 "${bbduk}" in="${abdo_r1}" in2="${abdo_r2}" \
@@ -25,6 +26,7 @@ sting_r2="data/sting_r2.fastq.gz"
     out2=output/bbduk_trim/abdo_r2.fq.gz \
     ref=/Volumes/BiocArchive/archive/deardenlab/asw-transcriptome/bin/bbmap/resources/adapters.fa \
     ktrim=r k=23 mink=11 hdist=1 tpe tbo \
+    qtrim=r trimq=15 \
     &> "${outdir}"/abdo.log.txt &
 
 "${bbduk}" in="${sting_r1}" in2="${sting_r2}" \
@@ -32,6 +34,7 @@ sting_r2="data/sting_r2.fastq.gz"
     out2=output/bbduk_trim/sting_r2.fq.gz \
     ref=/Volumes/BiocArchive/archive/deardenlab/asw-transcriptome/bin/bbmap/resources/adapters.fa \
     ktrim=r k=23 mink=11 hdist=1 tpe tbo \
+    qtrim=r trimq=15 \
     &> "${outdir}"/sting.log.txt &
 
 wait

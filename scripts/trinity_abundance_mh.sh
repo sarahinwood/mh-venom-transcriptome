@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
- /Volumes/BiocArchive/archive/deardenlab/asw-transcriptome/bin/trinity/util/align_and_estimate_abundance.pl \
+export LD_LIBRARY_PATH=/usr/lib64
+
+ bin/trinity/util/align_and_estimate_abundance.pl \
  	--transcripts output/trinity/Trinity.fasta \
- 	--seqType fq --est_method RSEM \
+ 	--seqType fq \
+ 	--est_method RSEM \
  	--output_dir output/trinity_abundance \
- 	--aln_method bowtie --prep_reference \
+ 	--aln_method bowtie \
+ 	--prep_reference \
  	--SS_lib_type RF \
  	--thread_count 1 \
  	--trinity_mode \

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-/Volumes/BiocArchive/archive/deardenlab/asw-transcriptome/bin/trinity/Trinity\
+bin/trinity/Trinity \
 	--SS_lib_type RF \
-    --max_memory 500G \
-    --CPU 20 \
+    --max_memory 300G \
+    --CPU 10 \
     --output output/trinity \
     --left output/bbduk_trim/abdo_r1.fq.gz,output/bbduk_trim/head_r1.fq.gz,output/bbduk_trim/sting_r1.fq.gz \
     --right output/bbduk_trim/abdo_r2.fq.gz,output/bbduk_trim/head_r2.fq.gz,output/bbduk_trim/sting_r2.fq.gz \

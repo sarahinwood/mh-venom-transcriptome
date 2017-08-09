@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-export LD_LIBRARY_PATH=/usr/lib64
+set -eu
+bowtie_path="$(readlink -f bin/bowtie1)"
+PATH="${bowtie_path}:${PATH}"
 
  bin/trinity/util/align_and_estimate_abundance.pl \
  	--transcripts output/trinity/Trinity.fasta \

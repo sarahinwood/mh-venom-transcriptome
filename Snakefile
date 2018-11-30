@@ -57,9 +57,8 @@ bbduk_adapters = '/adapters.fa'
 bbduk_container = 'shub://TomHarrop/singularity-containers:bbmap_38.00'
 busco_container = 'shub://TomHarrop/singularity-containers:busco_3.0.2'
 tidyverse_container = 'shub://TomHarrop/singularity-containers:r_3.5.0'
-trinity_container = 'images/trinity_2.8.4_py2.simg'
+trinity_container = 'shub://TomHarrop/singularity-containers:trinity_2.8.4'
 salmon_container = 'shub://TomHarrop/singularity-containers:salmon_0.11.1'
-kraken_container = 'shub://TomHarrop/singularity-containers:kraken_2.0.7beta'
 
 #########
 # SETUP #

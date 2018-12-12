@@ -1,20 +1,48 @@
+#!/usr/bin/env Rscript
+
+#######
+# LOG #
+#######
+
+log <- file(snakemake@log[[1]], open = "wt")
+sink(log, type = "message")
+sink(log, append = TRUE, type = "output")
+
+#############
+# LIBRARIES #
+#############
+
 library(data.table)
-library(ggplot2)
-isoform.list <- fread('output/trinity_abundance/RSEM.isoforms.results')
-exp.rows <- isoform.list[,.I[which.max(IsoPct)], by=gene_id][,V1]
-fwrite(isoform.list[exp.rows,list(transcript_id)], 'output/trinity_abundance/isoforms_by_expression.txt', col.names = FALSE)
 
+###########
+# GLOBALS #
+###########
 
-length.rows <- isoform.list[,.I[which.max(length)], by=gene_id][,V1]
-isoform.list[length.rows,transcript_id]
-fwrite(isoform.list[length.rows,list(transcript_id)], 'output/trinity_abundance/isoforms_by_length.txt', col.names = FALSE)
+abundance_file <- snakemake@input[["abundance"]]
 
-isoform.list[,hist(length, breaks = 100, xlim=c(0, +6000), ylim=c(0, +20000), main = "Transcript Lengths in New Mh Transcriptome Assembly", xlab = "Transcript Length (bp)")]
+########
+# MAIN #
+########
+
+isoform.list <- fread(abundance_file)
+
+#sort by expression
+isoforms_by_expression <- isoform.list[,.I[which.max(IsoPct)], by=gene_id][,V1]
+#write file sorted by expression
+fwrite(isoform.list[isoforms_by_expression,list(transcript_id)],
+	snakemake@output[["expression"]], col.names = FALSE)
+
+#sort by length
+isoforms_by_length <- isoform.list[,.I[which.max(length)], by=gene_id][,V1]
+#write file sorted by length
+fwrite(isoform.list[isoforms_by_length,list(transcript_id)],
+	snakemake@output[["length"]], col.names = FALSE)
+
+#plot transcript lengths
+isoform.list[,hist(length, breaks = 100, xlim=c(0, +5000),
+	main = "Transcript Lengths in New ASW Transcriptome Assembly",
+	xlab = "Transcript Length (bp)")]
 sum(isoform.list$length>500)
 
-#ggplot histogram
-ggplot(data = isoform.list, aes(x = isoform.list$length)) +
-  geom_histogram(binwidth=100) +
-  coord_cartesian(xlim = c(0, 5000)) + xlab("Transcript Length (bp)") + ylab("Frequency") +ggtitle("Transcript Lengths in Old Mh Transcriptome")
-
-gene.list <- fread('output/trinity_abundance/RSEM.genes.results')
+# write log
+sessionInfo()

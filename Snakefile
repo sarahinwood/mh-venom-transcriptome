@@ -270,7 +270,7 @@ rule sort_isoforms_r:
     log:
         'output/logs/sort_isoforms_r.log'
     script:
-        'scripts/sort_isoforms_mh.r'
+        'scripts/sort_isoforms_mh.R'
 
 rule ExN50_stats:
     input:

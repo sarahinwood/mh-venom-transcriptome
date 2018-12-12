@@ -76,13 +76,13 @@ all_samples = sorted(set(sample_key['Sample_name']))
 
 rule target:
     input:
-        ##expand('output/busco/run_{filter}/full_table_{filter}.tsv',
-                ##filter=['expression', 'length']), - need to determine appropriate lineage
+        expand('output/busco/run_{filter}/full_table_{filter}.tsv',
+                filter=['expression', 'length']),
         'output/fastqc',
         'output/trinity_stats/stats.txt',
         'output/trinity_stats/xn50.out.txt',
         'output/trinity_stats/bowtie2_alignment_stats.txt',
-        ###'output/transrate/Trinity/contigs.csv', - not currently running, need to troubleshoot ###
+        ##'output/transrate/Trinity/contigs.csv', - still not working ##
         'output/trinotate/trinotate/Trinotate.sqlite',
         expand('output/salmon/{sample}_quant/quant.sf',
                 sample=all_samples)
@@ -270,7 +270,7 @@ rule sort_isoforms_r:
     log:
         'output/logs/sort_isoforms_r.log'
     script:
-        'scripts/sort_isoforms.R'
+        'scripts/sort_isoforms_mh.r'
 
 rule ExN50_stats:
     input:

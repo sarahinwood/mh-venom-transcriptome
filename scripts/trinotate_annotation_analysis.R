@@ -38,11 +38,6 @@ setkey(genes.per.taxa, V1)
 print(genes.per.taxa)
 fwrite(genes.per.taxa, "output/trinotate/genes_per_taxa.csv")
 
-virus_annots <- dplyr::filter(annotation.report, grepl('virus', sprot_Top_BLASTX_hit))
-fwrite(virus_annots, "output/trinotate/viral_annots_trinotate.csv")
-virus_taxa <- dplyr::filter(genes.per.taxa, grepl('viruses', V7))
-fwrite(virus_taxa, "output/trinotate/genes_per_taxa_viral.csv")
-
 #meanwhile in excel sort for taxa with most annotations, delete those with low no.
 #I'm not interested in, and alter taxa name to just genera
 
@@ -52,10 +47,3 @@ plot.genes.per.taxa <- fread("output/trinotate/genes_per_taxa_edited_for_plot.cs
 ggplot(plot.genes.per.taxa, aes(x=reorder(V7, -V1), y=V1))+
   theme(axis.text.x = element_text(angle = 65, hjust = 1, face = "italic")) +
   geom_col()+xlab("Genera")+ylab("Number of BlastX Annotations")
-
-##plot viral taxa annots
-plot.viral.taxa <- fread("output/trinotate/genes_per_taxa_viral_edited_for_plot.csv")
-
-ggplot(plot.viral.taxa, aes(x=reorder(V7, -V1), y=V1))+
-  theme(axis.text.x = element_text(angle = 65, hjust = 1, face = "italic")) +
-  geom_col()+xlab("Viral Genera")+ylab("Number of BlastX Annotations")

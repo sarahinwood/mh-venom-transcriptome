@@ -2,7 +2,7 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 
-busco_output <- list.files("output/busco/",
+busco_output <- list.files("output/busco",
                            recursive = TRUE,
                            pattern = ".tsv",
                            full.names = TRUE)

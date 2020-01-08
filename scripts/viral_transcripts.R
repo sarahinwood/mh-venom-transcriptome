@@ -19,6 +19,21 @@ ggplot(plot.viral.taxa, aes(x=reorder(V7, -V1), y=V1))+
 
 
 trinotate_virus_annots <- dplyr::filter(annotation.report, grepl('virus', sprot_Top_BLASTX_hit))
+viral_not_transposon <- data.table(dplyr::filter(trinotate_virus_annots, !grepl('transposon', sprot_Top_BLASTX_hit)))
+fwrite(viral_not_transposon, "output/trinotate/viral/viral_annots.csv")
+##write list of viral transcript IDs to pull out of fasta file
+viral_transcripts <- viral_not_transposon[,transcript_id]
+fwrite(list(viral_transcripts), "output/trinotate/viral/viral_transcript_ids.txt")
+
+##baculovirus genes
+baculovirus_genes <- dplyr::filter(viral_not_transposon, grepl('Baculoviridae', sprot_Top_BLASTX_hit))
+baculovirus_gene_ids <- baculovirus_genes[,"transcript_id"]
+fwrite(list(baculovirus_gene_ids), "output/trinotate/viral/baculoviridae_gene_ids.txt")
+fwrite(baculovirus_genes, "output/trinotate/viral/baculoviridae_annots.csv")
+
+bro_n <- dplyr::filter(annotation.report, grepl('Bro-N', Pfam))
+fwrite(bro_n, "output/trinotate/viral/bro-n.csv")
+
 fwrite(trinotate_virus_annots, "output/trinotate/viral/viral_annots_trinotate.csv")
 
 ##sort out viral annots

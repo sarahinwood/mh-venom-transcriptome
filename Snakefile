@@ -86,9 +86,9 @@ rule target:
         'output/trinotate/trinotate/Trinotate.sqlite',
         'output/recip_blast/nr_blastx/nr_blastx.outfmt3'
 
-##############################################
-##Reciprocal blastx searching for LbFV genes##
-##############################################
+################################################################
+##Reciprocal blastx searching for viral annots for unann genes##
+################################################################
 
 rule recip_nr_blastx:
     input:
@@ -102,7 +102,7 @@ rule recip_nr_blastx:
     log:
         'output/logs/recip_nr_blastx.log'
     shell:
-        'blastp '
+        'blastx '
         '-query {input.pot_viral_transcripts} '
         '-db {params.blast_db} '
         '-num_threads {threads} '
@@ -145,7 +145,7 @@ rule filter_transcript_ids:
 
 rule recip_blastx_viral:
     input:
-        query = 'output/trinity_filtered_isoforms/isoforms_by_length.fasta',
+        unann_transcripts = 'output/trinotate/trinotate/blastx_unann_transcripts.fasta',
         gi_list = 'data/gi_lists/virus.gi.txt'
     output:
         blastx_res = 'output/recip_blast/viral_blastx/transcriptome_viral_blastx.outfmt3'
@@ -157,13 +157,34 @@ rule recip_blastx_viral:
         'output/logs/recip_blastx_viral.log'
     shell:
         'blastx '
-        '-query {input.query} '
+        '-query {input.unann_transcripts} '
         '-db {params.blast_db} '
         '-gilist {input.gi_list} '
         '-num_threads {threads} '
         '-evalue 1e-05 '
         '-outfmt "6 std salltitles" > {output.blastx_res} '
         '2> {log}'
+
+rule filter_unann_transcripts:
+    input:
+        length_filtered_transcriptome = 'output/trinity_filtered_isoforms/isoforms_by_length.fasta',
+        unann_transcript_ids = 'output/trinotate/trinotate/ids_genes_no_blastx_annot.txt'
+    output:
+        unann_transcripts = 'output/trinotate/trinotate/blastx_unann_transcripts.fasta'
+    threads:
+        50
+    singularity:
+        bbduk_container
+    log:
+        'output/logs/filter_unann_transcripts.log'
+    shell:
+        'filterbyname.sh '
+        'in={input.length_filtered_transcriptome} '
+        'include=t '
+        'names={input.unann_transcript_ids} '
+        'substring=name '
+        'out={output.unann_transcripts} '
+        '&> {log}'
 
 #######################################
 ##Transcriptome assembled & annotated##

@@ -3,7 +3,7 @@
 import pathlib2
 import pandas
 import os
-import snap
+#import snap -  for transrate?
 
 #############
 # FUNCTIONS #
@@ -78,17 +78,20 @@ rule target:
     input:
         expand('output/busco/run_{filter}/full_table_{filter}.tsv',
                 filter=['expression', 'length']),
-        'output/fastqc',
+        #'output/fastqc',
         'output/trinity_stats/stats.txt',
         'output/trinity_stats/xn50.out.txt',
         'output/trinity_stats/bowtie2_alignment_stats.txt',
-        'output/transrate/Trinity/contigs.csv',
+        #'output/transrate/Trinity/contigs.csv',
         'output/trinotate/trinotate/Trinotate.sqlite',
-        'output/recip_blast/nr_blastx/nr_blastx.outfmt3'
+        #'output/recip_blast/nr_blastx/nr_blastx.outfmt3'
 
 ################################################################
 ##Reciprocal blastx searching for viral annots for unann genes##
 ################################################################
+
+##find extra thinsg trinotate didn't find as those blast searches use uniprot db,
+#but these use nr blast db (so get predicted genes that don't necessarily have protein info)
 
 rule recip_nr_blastx:
     input:
